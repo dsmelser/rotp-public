@@ -57,6 +57,8 @@ text in the planetary spending screen. Since version 1.8 Governor is on by defau
 
 Additional features / changelog
 
+* 4.04.0 Merge 1.04. Package Windows game with JRE v17 as that's the latest LTS release.
+
 * 4.03.0 Merge 1.03. Since the change to increase minimum transport cost to 10BC was never implemented upstream, 
 revamp auto-transport. Revert to transporting only organic population growth 1-2 at a time. And eco spending
 will not spend on population growth when close to maximum population leaving room for natural growth. Also

@@ -8,3 +8,6 @@ launch4j/Remnants/
 target/
 .idea/
 *.iml
+cwebp.exe
+oggenc.exe
+oggenc2.exe

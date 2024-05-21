@@ -47,6 +47,10 @@ public class RandomEventSpaceCrystal implements Base, Serializable, RandomEvent 
     @Override
     public int minimumTurn()                    { 
         // space monsters can be a challenge... delay their entry in the easier game settings
+
+        //these delays need to be modified by the research rate
+        //otherwise the crystal can show up WAY before anyone can deal
+        //with it and it will wipe out the galaxy
         switch (options().selectedGameDifficulty()) {
             case IGameOptions.DIFFICULTY_EASIEST:
                 return RandomEvents.START_TURN + 400;
@@ -75,6 +79,13 @@ public class RandomEventSpaceCrystal implements Base, Serializable, RandomEvent 
     }
     @Override
     public void nextTurn() {
+        //this needs to scale with the size of the galaxy, otherwise
+        //we end up getting gobbled before we can even get ships in place
+
+        int width = galaxy().width();
+        int height = galaxy().height();
+
+
         if (turnCount == 3) 
             approachSystem();     
         else if (turnCount == 0) 
@@ -170,6 +181,13 @@ public class RandomEventSpaceCrystal implements Base, Serializable, RandomEvent 
     
         log("Space Crystal moving to system: "+nextSysId);
         StarSystem nextSys = galaxy().system(nextSysId);
+
+        //number of star systems is the wrong metric here
+        //we should be using the size of the galaxy since ships
+        //travel in space
+
+
+
         float slowdownEffect = max(1, 100.0f / galaxy().maxNumStarSystems());
         turnCount = (int) Math.ceil(1.5*slowdownEffect*nextSys.distanceTo(targetSystem));
         sysId = nextSys.id;        

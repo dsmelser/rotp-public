@@ -445,7 +445,7 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
     public static Comparator<StarSystem> FACTORIES          = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.colony().industry().factories(),sys2.colony().industry().factories());
     public static Comparator<StarSystem> BASE_PRODUCTION    = (StarSystem o1,   StarSystem o2)   -> Base.compare(o1.colony().production(),o2.colony().production());
     public static Comparator<StarSystem> WASTE              = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.colony().ecology().waste(),sys2.colony().ecology().waste());
-    public static Comparator<StarSystem> INCOME             = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.colony().totalIncome(),sys2.colony().totalIncome());
+    public static Comparator<StarSystem> INCOME             = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.colony().totalIncome() * sys1.planet().productionAdj(),sys2.colony().totalIncome()* sys2.planet().productionAdj());
     public static Comparator<StarSystem> CAPACITY           = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.colony().currentProductionCapacity(),sys2.colony().currentProductionCapacity());
     public static Comparator<StarSystem> BASES              = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.colony().defense().bases(),sys2.colony().defense().bases());
     public static Comparator<StarSystem> SHIELD             = (StarSystem sys1, StarSystem sys2) -> Base.compare(sys1.colony().defense().shieldLevel(),sys2.colony().defense().shieldLevel());

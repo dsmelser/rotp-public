@@ -88,6 +88,20 @@
         <sourceDirectory>src</sourceDirectory>
         <resources>
             <resource>
+                <directory>${project.basedir}</directory>
+                <targetPath>${project.build.directory}</targetPath>
+                <includes>
+                    <include>oggenc2.exe</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>${project.basedir}</directory>
+                <targetPath>${project.build.directory}</targetPath>
+                <includes>
+                    <include>cwebp.exe</include>
+                </includes>
+            </resource>
+            <resource>
                 <directory>src</directory>
                 <excludes>
                     <exclude>**/*.java</exclude>
@@ -138,7 +152,7 @@
                             <goal>run</goal>
                         </goals>
                         <configuration>
-                            <command>oggenc ${input} -o ${output}</command>
+                            <command>oggenc2 ${input} -o ${output}</command>
                             <outputExtension>ogg</outputExtension>
                             <errorToOutput>true</errorToOutput>
                             <inputFiles>
@@ -178,6 +192,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.0</version>
                 <executions>
                     <!-- Run shade goal on package phase -->
                     <!-- package minified jar. This needs to run first as it's attached, doesn't replace main jar -->
@@ -272,6 +287,7 @@
             <plugin>
                 <groupId>com.akathist.maven.plugins.launch4j</groupId>
                 <artifactId>launch4j-maven-plugin</artifactId>
+                <version>1.7.25</version>
                 <executions>
                     <execution>
                         <phase>package</phase>

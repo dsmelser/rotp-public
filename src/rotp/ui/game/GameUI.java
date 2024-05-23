@@ -661,6 +661,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     public void keyPressed(KeyEvent e) {
         resetSlideshowTimer();
         int k = e.getKeyCode();
+
         switch (k) {
             case KeyEvent.VK_MINUS:
                 if ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)
@@ -671,7 +672,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
                     expandFrame(); 
                 return;
             case KeyEvent.VK_Z:  hideText = true; repaint(); return;
-            case KeyEvent.VK_C:  continueGame(); return;
+            case KeyEvent.VK_C: continueGame(); return;
             case KeyEvent.VK_N:  newGame();      return;
             case KeyEvent.VK_L:  loadGame();     return;
             case KeyEvent.VK_O:  openManual();     return;
@@ -685,6 +686,9 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
                     continueGame();
         }
     }
+
+
+
     private void shrinkFrame() {
         if (!UserPreferences.windowed())
             return;

@@ -17,15 +17,15 @@
     <scm>
         <connection>scm:git:${project.scm.url}</connection>
         <developerConnection>scm:git:${project.scm.url}</developerConnection>
-        <url>https://github.com/coder111111/rotp-public.git</url>
+        <url>https://github.com/dsmelser/rotp-public.git</url>
         <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
         <repository>
             <id>github</id>
-            <name>coder111111</name>
-            <url>https://maven.pkg.github.com/coder111111/rotp-public</url>
+            <name>dsmelser</name>
+            <url>https://maven.pkg.github.com/dsmelser/rotp-public</url>
         </repository>
     </distributionManagement>
 
@@ -386,7 +386,7 @@
                     <execution>
                         <id>default-cli</id>
                         <configuration>
-                            <owner>coder111111</owner>
+                            <owner>dsmelser</owner>
                             <repository>rotp-public</repository>
                             <authToken>${GITHUB_TOKEN}</authToken>
                             <tagName>v${project.version}</tagName>

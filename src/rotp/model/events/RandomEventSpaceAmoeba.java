@@ -24,12 +24,15 @@ import rotp.model.game.IGameOptions;
 import rotp.ui.notifications.GNNNotification;
 import rotp.util.Base;
 
+import static rotp.model.game.IGameOptions.*;
+
 public class RandomEventSpaceAmoeba implements Base, Serializable, RandomEvent {
     private static final long serialVersionUID = 1L;
     public static SpaceAmoeba monster;
     private int empId;
     private int sysId;
     private int turnCount = 0;
+    private boolean justTriggered = false;
     
     static {
         initMonster();
@@ -47,15 +50,34 @@ public class RandomEventSpaceAmoeba implements Base, Serializable, RandomEvent {
     @Override
     public int minimumTurn()                    { 
         // space monsters can be a challenge... delay their entry in the easier game settings
+
+        //these delays need to be modified by the research rate
+        //otherwise the amoeba can show up WAY before anyone can deal
+        //with it and it will wipe out the galaxy.
+
+        float ratio = 1.0f;
+
+        switch(options().selectedResearchRate()) {
+            case RESEARCH_SLOW:
+                ratio = sqrt(50.0f/3.0f); // approx. 4x slower for level 50
+                break;
+            case RESEARCH_SLOWER:
+                ratio = sqrt(50.0f);   // approx. 7x slower for level 50
+                break;
+            case RESEARCH_SLOWEST:
+                ratio = sqrt(50.0f*5); // approx. 16x slower for level 50
+                break;
+        }
+
         switch (options().selectedGameDifficulty()) {
              case IGameOptions.DIFFICULTY_EASIEST:
-                return RandomEvents.START_TURN + 400;
+                return RandomEvents.START_TURN + (int)(400 * ratio);
             case IGameOptions.DIFFICULTY_EASIER:
-                return RandomEvents.START_TURN + 300;
+                return RandomEvents.START_TURN + (int)(300 * ratio);
             case IGameOptions.DIFFICULTY_EASY:
-                return RandomEvents.START_TURN + 200;
+                return RandomEvents.START_TURN + (int)(200 * ratio);
             default:
-                return RandomEvents.START_TURN + 100;
+                return RandomEvents.START_TURN + (int)(100 * ratio);
         }
     }
     @Override
@@ -70,13 +92,31 @@ public class RandomEventSpaceAmoeba implements Base, Serializable, RandomEvent {
         StarSystem targetSystem = random(emp.allColonizedSystems());
         empId = emp.id;
         sysId = targetSystem.id;
-        turnCount = 3;
+
+        //this needs to scale with the size of the galaxy, otherwise
+        //we end up getting gobbled before we can even get ships in place
+
+        int width = galaxy().width();
+        int height = galaxy().height();
+
+        //double ellipseArea = Math.PI / 4.0 * width * height;
+
+        double minor = Math.min(width, height) / 2.0;
+
+        double major = Math.max(width,height) / 2.0;
+
+        int turns = (int)Math.ceil(major + minor);
+
+        turnCount = turns;
+        justTriggered = true;
         galaxy().events().addActiveEvent(this);
     }
     @Override
     public void nextTurn() {
-        if (turnCount == 3) 
-            approachSystem();     
+        if (justTriggered) {
+            approachSystem();
+            justTriggered = false;
+        }
         else if (turnCount == 0) 
             enterSystem();
         turnCount--;
@@ -172,9 +212,10 @@ public class RandomEventSpaceAmoeba implements Base, Serializable, RandomEvent {
         StarSystem nextSys = galaxy().system(nextSysId);
         float slowdownEffect = max(1, 100.0f / galaxy().maxNumStarSystems());
         turnCount = (int) Math.ceil(1.5*slowdownEffect*nextSys.distanceTo(targetSystem));
-        sysId = nextSys.id;    
-        if (turnCount <= 3)
-            approachSystem();     
+        sysId = nextSys.id;
+        justTriggered = true;
+        //if (turnCount <= 3)
+            //approachSystem();
     }
     private String notificationText(String key, Empire emp)    {
         String s1 = text(key);

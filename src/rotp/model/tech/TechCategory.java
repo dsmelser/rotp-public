@@ -120,7 +120,10 @@ public final class TechCategory implements Base, Serializable {
         }
         allocation(MAX_ALLOCATION_TICKS);
     }
-    public float baseResearchCost(int techLevel)  { return options().researchCostBase(techLevel)*session().researchMapSizeAdjustment();}
+    public float baseResearchCost(int techLevel)  {
+        return options().researchCostBase(techLevel)
+                * session().researchMapSizeAdjustment();
+    }
     private void init() {
         if (!tree.spy())
             buildResearchList();

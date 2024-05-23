@@ -21,6 +21,7 @@ import java.util.List;
 import rotp.model.Sprite;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.game.GameSession;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.main.GalaxyMapPanel;
@@ -155,8 +156,14 @@ public class MapOverlayNone extends MapOverlay {
                 }
                 break;
             case KeyEvent.VK_C:
-                buttonClick();
-                RotPUI.instance().selectPlanetsPanel();
+
+                if( e.isAltDown() && e.isShiftDown() ){
+                    cheatGiveAllTechs();
+                } else {
+
+                    buttonClick();
+                    RotPUI.instance().selectPlanetsPanel();
+                }
                 break;
             case KeyEvent.VK_T:
                 if  (e.getModifiersEx() == 0) {
@@ -449,5 +456,11 @@ public class MapOverlayNone extends MapOverlay {
                 break;
         }
         return true;
+    }
+
+    private void cheatGiveAllTechs() {
+        GameSession instance = GameSession.instance();
+
+        instance.player().tech().learnAll();
     }
 }

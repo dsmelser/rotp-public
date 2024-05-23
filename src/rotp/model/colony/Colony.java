@@ -805,7 +805,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
             return production() * empire.tradeIncomePerBC();
     }
     public float totalIncome() {
-        return totalProductionIncome() + maxReserveIncome();
+        return totalProductionIncome() * planet().productionAdj() + maxReserveIncome();
     }
     public float colonyTaxPct() {
         if (embargoed())
@@ -876,7 +876,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
         return min(wasteCleanupCost(), totalIncome());
     }
     public void ensureMinimumCleanup() {
-        float pct = wasteCleanupCost()/totalIncome();
+        float pct = wasteCleanupCost()/totalIncome()*planet().productionAdj();
         if (ecology().pct() < pct)
             forcePct(ECOLOGY, pct);
     }
